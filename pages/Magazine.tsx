@@ -1,40 +1,115 @@
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+import { Post } from '../types';
 
-import React from 'react';
-import { TOP_PRODUCTS } from '../constants';
-import MagazineCard from '../components/MagazineCard';
+const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskolaszer', 'Irodaszer', 'Kreatív', 'Egyéb'];
 
 const Magazine: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState('Összes');
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      let query = supabase.from('posts').select('*').order('created_at', { ascending: false });
+      if (activeCategory !== 'Összes') query = query.eq('category', activeCategory);
+      const { data } = await query;
+      setPosts(data ?? []);
+      setLoading(false);
+    };
+    fetchPosts();
+  }, [activeCategory]);
+
   return (
     <div className="bg-slate-50 min-h-screen pb-24">
-      {/* Magazine Header */}
+      {/* Header */}
       <div className="bg-white border-b border-slate-200 py-20 mb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-indigo-600 font-bold tracking-widest uppercase text-sm mb-4 block animate-in fade-in slide-in-from-bottom-4 duration-700">Online Katalógus</span>
+          <span className="text-teal-600 font-bold tracking-widest uppercase text-sm mb-4 block animate-in fade-in slide-in-from-bottom-4 duration-700">
+            Legújabb termékek
+          </span>
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            Top 10 Termékünk <br />
-            <span className="text-indigo-600 font-light italic brand-font">Szezonális Kedvencek</span>
+            Friss Árukészlet <br />
+            <span className="text-teal-600 font-light italic brand-font">Egyenesen az üzletből</span>
           </h1>
           <p className="text-slate-500 text-xl max-w-3xl mx-auto font-light leading-relaxed">
-            Válogasson a legnépszerűbb termékeink közül. Kínálatunkat folyamatosan frissítjük, hogy Ön mindig a legjobb minőséget kapja.
+            Folyamatosan frissülő kínálatunk legújabb darabjai. Kövesse oldalunkat a legfrissebb termékekért!
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {TOP_PRODUCTS.map((product, index) => (
-            <div key={product.id} className="animate-in fade-in slide-in-from-bottom-12 duration-1000" style={{ animationDelay: `${index * 100}ms` }}>
-              <MagazineCard product={product} />
-            </div>
+      {/* Category filter */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+        <div className="flex flex-wrap gap-2 justify-center">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition ${
+                activeCategory === cat
+                  ? 'bg-teal-600 text-white shadow-md'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:border-teal-400'
+              }`}
+            >
+              {cat}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Facebook Feed Section */}
+      {/* Posts grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {loading ? (
+          <div className="flex justify-center py-24">
+            <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="text-center py-24">
+            <i className="fas fa-box-open text-5xl text-slate-300 mb-4 block"></i>
+            <p className="text-slate-400 text-lg">Nincs bejegyzés ebben a kategóriában.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {posts.map((post, index) => (
+              <div
+                key={post.id}
+                className="animate-in fade-in slide-in-from-bottom-12 duration-700"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <div className="group relative overflow-hidden bg-white rounded-2xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-slate-100">
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur shadow-md px-3 py-1 rounded-full text-xs font-bold text-teal-600 uppercase tracking-widest">
+                      {post.category}
+                    </div>
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow text-center">
+                    <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight">{post.title}</h3>
+                    {post.description && (
+                      <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
+                    )}
+                    <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
+                      {new Date(post.created_at).toLocaleDateString('hu-HU')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Facebook section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 mb-12">
         <div className="flex flex-col items-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
-            <i className="fab fa-facebook text-indigo-600"></i>
+            <i className="fab fa-facebook text-teal-600"></i>
             Kövess minket Facebookon!
           </h2>
           <div className="bg-white p-4 rounded-3xl shadow-xl overflow-hidden max-w-full">
@@ -53,10 +128,11 @@ const Magazine: React.FC = () => {
         </div>
       </div>
 
-      {/* Magazine "Paper" feel footer */}
-      <div className="max-w-4xl mx-auto mt-24 text-center px-4">
+      <div className="max-w-4xl mx-auto mt-12 text-center px-4">
         <div className="p-8 border-2 border-dashed border-slate-300 rounded-3xl bg-white/50">
-          <p className="text-slate-500 italic mb-4">"A fenti árak és termékelérhetőségek tájékoztató jellegűek. Pontos információkért kérjük, látogasson el üzletünkbe!"</p>
+          <p className="text-slate-500 italic mb-4">
+            "A termékek elérhetőségéről pontos információkért kérjük, látogasson el üzletünkbe!"
+          </p>
           <div className="flex justify-center items-center gap-6">
             <div className="h-px w-20 bg-slate-300"></div>
             <span className="brand-font text-2xl text-slate-400">Onder Papír</span>

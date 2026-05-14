@@ -7,13 +7,13 @@ export const MAP_EMBED_URL = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m
 
 export const CONTACT_DATA: ContactInfo = {
   address: "3580 Tiszaújváros, Barcsay Jenő tér 4.",
-  phone: "+36 49 341 850",
-  email: "onderpapir@gmail.com",
+  phone: "+36 20 252 4031",
+  email: "onder.trade2020@gmail.com",
   facebook: "https://www.facebook.com/p/ONDER-Pap%C3%ADr-100063292235639/"
 };
 
 export const OPENING_HOURS: OpeningHours[] = [
-  { day: "Hétfő - Péntek", hours: "08:00 - 17:00" },
+  { day: "Hétfő - Péntek", hours: "08:00 - 17:00", lunchBreak: "12:00 - 13:00" },
   { day: "Szombat", hours: "08:00 - 12:00" },
   { day: "Vasárnap", hours: "Zárva" }
 ];

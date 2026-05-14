@@ -1,46 +1,44 @@
 
 import React from 'react';
+import { CONTACT_DATA } from '../constants';
 
 const Services: React.FC = () => {
   const serviceCategories = [
     {
-      title: "Nyomtatás és Másolás",
-      icon: "fa-print",
+      title: "Egyedi Megrendelések",
+      icon: "fa-star",
       items: [
-        "Fekete-fehér és színes nyomtatás (A4, A3)",
-        "Fénymásolás nagy tételben is",
-        "Szkennelés e-mailbe vagy pendrive-ra",
-        "Fotónyomtatás minőségi papírra"
+        "Speciális termékek egyedi igény szerint",
+        "Nehezen beszerezhető papíráruk felkutatása",
+        "Céges és intézményi megrendelések - kiszállítás megegyezés szerint",
+        "Személyes tanácsadás a megfelelő termék megtalálásához"
       ]
     },
     {
-      title: "Kötészet és Védelem",
-      icon: "fa-book",
-      items: [
-        "Műanyag spirálozás (több színben)",
-        "Fém spirálozás professzionális megjelenéshez",
-        "Laminálás névjegykártyától A3-as méretig",
-        "Szakdolgozat kötés"
-      ]
-    },
-    {
-      title: "Irodai Adminisztráció",
+      title: "Bélyegzők",
       icon: "fa-stamp",
       items: [
-        "Bélyegző készítés (Colop, Trodat)",
-        "Névjegykártya tervezés és nyomás",
-        "Meghívók és üdvözlőkártyák készítése",
-        "Dokumentum szerkesztés"
+        "Egyedi bélyegzők kizárólag előre leadott megrendelés alapján",
+        "Az igényelt szöveg és méret megbeszélése személyesen vagy e-mailben",
+        "Érdeklődjön elérhetőségeinken a részletekért"
       ]
     },
     {
-      title: "Egyedi Megrendelések",
-      icon: "fa-gift",
+      title: "Iskolakezdési Füzetcsomagok",
+      icon: "fa-school",
       items: [
-        "Speciális papíráruk beszerzése",
-        "Művészellátó eszközök rendelésre",
-        "Iskolai csomagok összeállítása",
-        "Céges irodaszer ellátás"
+        "Osztályonként összeállított füzetcsomagok",
+        "Időt és energiát spórol a szülőknek"
+      ]
+    },
+    {
+      title: "Fejlesztő Játékok és Foglalkoztatók",
+      icon: "fa-puzzle-piece",
+      items: [
+        "Készségfejlesztő és logikai játékok",
+        "Foglalkoztató füzetek korosztályonként",
+        "Kifestők és kreatív színezők",
+        "Oktatási segédanyagok gyerekeknek"
       ]
     }
   ];
@@ -51,14 +49,14 @@ const Services: React.FC = () => {
         <div className="text-center mb-20">
           <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 italic brand-font">Szolgáltatásaink</h1>
           <p className="text-slate-500 text-xl max-w-2xl mx-auto font-light">
-            Nemcsak termékekkel, hanem szaktudással és modern gépparkkal is segítjük munkáját és tanulmányait.
+            Személyre szabott megoldások, egyedi rendelések és gondosan összeállított csomagok — mindez egy helyen.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10">
           {serviceCategories.map((cat, idx) => (
             <div key={idx} className="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-slate-100 flex gap-8 items-start">
-              <div className="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg shadow-indigo-200">
+              <div className="w-16 h-16 bg-teal-600 text-white rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg shadow-teal-200">
                 <i className={`fas ${cat.icon}`}></i>
               </div>
               <div>
@@ -66,7 +64,7 @@ const Services: React.FC = () => {
                 <ul className="space-y-4">
                   {cat.items.map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-slate-600">
-                      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></div>
+                      <div className="w-1.5 h-1.5 bg-teal-400 rounded-full"></div>
                       {item}
                     </li>
                   ))}
@@ -76,15 +74,15 @@ const Services: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-24 bg-white rounded-[3rem] p-12 text-center border-4 border-indigo-50">
-            <h2 className="text-3xl font-bold mb-6">Árajánlatot kérne?</h2>
-            <p className="text-slate-500 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-              Nagyobb mennyiségű nyomtatás vagy speciális irodaszer igény esetén kérjen egyedi árajánlatot e-mailben vagy telefonon!
-            </p>
-            <a href="mailto:onderpapir@gmail.com" className="inline-flex items-center gap-2 bg-indigo-600 text-white px-10 py-4 rounded-full font-bold hover:bg-indigo-700 transition-colors shadow-lg">
-                <i className="fas fa-paper-plane"></i>
-                E-mail küldése
-            </a>
+        <div className="mt-24 bg-white rounded-[3rem] p-12 text-center border-4 border-teal-50">
+          <h2 className="text-3xl font-bold mb-6">Árajánlatot kérne?</h2>
+          <p className="text-slate-500 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            Speciális igény, egyedi csomag vagy bélyegző rendelés esetén keressen minket e-mailben vagy telefonon — szívesen segítünk!
+          </p>
+          <a href={`mailto:${CONTACT_DATA.email}`} className="inline-flex items-center gap-2 bg-teal-600 text-white px-10 py-4 rounded-full font-bold hover:bg-teal-700 transition-colors shadow-lg">
+            <i className="fas fa-paper-plane"></i>
+            E-mail küldése
+          </a>
         </div>
       </div>
     </div>

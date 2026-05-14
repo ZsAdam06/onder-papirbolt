@@ -7,22 +7,28 @@ import Home from './pages/Home';
 import Magazine from './pages/Magazine';
 import Contact from './pages/Contact';
 import Services from './pages/Services';
+import Admin from './pages/Admin';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/ujsag" element={<Magazine />} />
-            <Route path="/szolgaltatasok" element={<Services />} />
-            <Route path="/kapcsolat" element={<Contact />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/ujsag" element={<Magazine />} />
+                <Route path="/szolgaltatasok" element={<Services />} />
+                <Route path="/kapcsolat" element={<Contact />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        } />
+      </Routes>
     </Router>
   );
 };
