@@ -1,8 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { Post } from '../types';
 
 const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskolaszer', 'Irodaszer', 'Kreatív', 'Egyéb'];
+
+const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+  const images = post.image_urls?.length ? post.image_urls : [post.image_url];
+  const [idx, setIdx] = useState(0);
+  const prev = useCallback((e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length); }, [images.length]);
+  const next = useCallback((e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i + 1) % images.length); }, [images.length]);
+
+  return (
+    <div className="group relative overflow-hidden bg-white rounded-2xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-slate-100">
+      <div className="relative aspect-[3/4] overflow-hidden">
+        <img
+          src={images[idx]}
+          alt={post.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur shadow-md px-3 py-1 rounded-full text-xs font-bold text-teal-600 uppercase tracking-widest">
+          {post.category}
+        </div>
+        {images.length > 1 && (
+          <>
+            <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <i className="fas fa-chevron-left text-xs"></i>
+            </button>
+            <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <i className="fas fa-chevron-right text-xs"></i>
+            </button>
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+              {images.map((_, i) => (
+                <button key={i} onClick={e => { e.stopPropagation(); setIdx(i); }}
+                  className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-white w-3' : 'bg-white/50'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="p-6 flex flex-col flex-grow text-center">
+        <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight">{post.title}</h3>
+        {post.description && (
+          <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
+        )}
+        <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
+          {new Date(post.created_at).toLocaleDateString('hu-HU')}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const Magazine: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -77,28 +126,7 @@ const Magazine: React.FC = () => {
                 className="animate-in fade-in slide-in-from-bottom-12 duration-700"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
-                <div className="group relative overflow-hidden bg-white rounded-2xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-slate-100">
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <img
-                      src={post.image_url}
-                      alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur shadow-md px-3 py-1 rounded-full text-xs font-bold text-teal-600 uppercase tracking-widest">
-                      {post.category}
-                    </div>
-                  </div>
-                  <div className="p-6 flex flex-col flex-grow text-center">
-                    <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight">{post.title}</h3>
-                    {post.description && (
-                      <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
-                    )}
-                    <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
-                      {new Date(post.created_at).toLocaleDateString('hu-HU')}
-                    </p>
-                  </div>
-                </div>
+                <PostCard post={post} />
               </div>
             ))}
           </div>

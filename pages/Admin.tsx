@@ -85,44 +85,46 @@ const PostForm: React.FC<{
   const [title, setTitle] = useState(initial?.title ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [category, setCategory] = useState(initial?.category ?? CATEGORIES[0]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState(initial?.image_url ?? '');
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [existingUrls, setExistingUrls] = useState<string[]>(initial?.image_urls ?? []);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
+  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    setNewFiles(prev => [...prev, ...files]);
   };
+
+  const removeExisting = (url: string) => setExistingUrls(prev => prev.filter(u => u !== url));
+  const removeNew = (index: number) => setNewFiles(prev => prev.filter((_, i) => i !== index));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
     setError('');
     try {
-      let image_url = initial?.image_url ?? '';
-
-      if (imageFile) {
-        const ext = imageFile.name.split('.').pop();
-        const path = `${Date.now()}.${ext}`;
+      const uploadedUrls: string[] = [];
+      for (const file of newFiles) {
+        const ext = file.name.split('.').pop();
+        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
         const { error: uploadError } = await supabase.storage
           .from('product-images')
-          .upload(path, imageFile, { upsert: true });
+          .upload(path, file, { upsert: true });
         if (uploadError) throw uploadError;
         const { data } = supabase.storage.from('product-images').getPublicUrl(path);
-        image_url = data.publicUrl;
+        uploadedUrls.push(data.publicUrl);
       }
 
-      if (!image_url) throw new Error('Kép szükséges');
+      const image_urls = [...existingUrls, ...uploadedUrls];
+      if (image_urls.length === 0) throw new Error('Legalább egy kép szükséges');
+      const image_url = image_urls[0];
 
       if (initial) {
-        const { error } = await supabase.from('posts').update({ title, description, category, image_url }).eq('id', initial.id);
+        const { error } = await supabase.from('posts').update({ title, description, category, image_url, image_urls }).eq('id', initial.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('posts').insert({ title, description, category, image_url });
+        const { error } = await supabase.from('posts').insert({ title, description, category, image_url, image_urls });
         if (error) throw error;
       }
       onSave();
@@ -132,6 +134,11 @@ const PostForm: React.FC<{
       setUploading(false);
     }
   };
+
+  const allPreviews = [
+    ...existingUrls.map(url => ({ type: 'existing' as const, src: url })),
+    ...newFiles.map((f, i) => ({ type: 'new' as const, src: URL.createObjectURL(f), index: i })),
+  ];
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -167,10 +174,27 @@ const PostForm: React.FC<{
       </div>
       <div>
         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
-          Kép {!initial && '*'}
+          Képek {!initial && '*'}
+          {allPreviews.length > 0 && <span className="ml-2 text-teal-600 normal-case font-normal">{allPreviews.length} kép</span>}
         </label>
-        {previewUrl && (
-          <img src={previewUrl} alt="előnézet" className="w-full h-52 object-cover rounded-xl mb-3 shadow-sm" />
+        {allPreviews.length > 0 && (
+          <div className="grid grid-cols-3 gap-2 mb-3">
+            {allPreviews.map((item, i) => (
+              <div key={i} className="relative group aspect-square">
+                <img src={item.src} className="w-full h-full object-cover rounded-xl" />
+                {i === 0 && (
+                  <span className="absolute top-1 left-1 bg-teal-600 text-white text-xs px-1.5 py-0.5 rounded-md font-bold">fő</span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => item.type === 'existing' ? removeExisting(item.src) : removeNew(item.index!)}
+                  className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              </div>
+            ))}
+          </div>
         )}
         <button
           type="button"
@@ -178,9 +202,9 @@ const PostForm: React.FC<{
           className="w-full border-2 border-dashed border-slate-200 rounded-xl py-5 text-slate-400 hover:border-teal-400 hover:text-teal-600 transition-colors bg-slate-50"
         >
           <i className="fas fa-cloud-upload-alt mr-2 text-lg"></i>
-          {imageFile ? imageFile.name : 'Kép kiválasztása'}
+          Képek hozzáadása
         </button>
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+        <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
       </div>
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2 text-red-600 text-sm">

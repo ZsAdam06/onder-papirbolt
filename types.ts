@@ -27,5 +27,6 @@ export interface Post {
   description: string | null;
   category: string;
   image_url: string;
+  image_urls: string[];
   created_at: string;
 }
