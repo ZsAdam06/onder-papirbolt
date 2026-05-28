@@ -11,6 +11,7 @@ const Navbar: React.FC = () => {
     { name: 'Kezdőlap', path: '/' },
     { name: 'Termékújság', path: '/ujsag' },
     { name: 'Szolgáltatások', path: '/szolgaltatasok' },
+    { name: 'Kedvezmények', path: '/kedvezmenyek' },
     { name: 'Kapcsolat', path: '/kapcsolat' },
   ];
 

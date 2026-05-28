@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Magazine from './pages/Magazine';
 import Contact from './pages/Contact';
 import Services from './pages/Services';
+import Discounts from './pages/Discounts';
 import Admin from './pages/Admin';
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/ujsag" element={<Magazine />} />
                 <Route path="/szolgaltatasok" element={<Services />} />
+                <Route path="/kedvezmenyek" element={<Discounts />} />
                 <Route path="/kapcsolat" element={<Contact />} />
               </Routes>
             </main>
