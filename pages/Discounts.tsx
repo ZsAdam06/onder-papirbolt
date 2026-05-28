@@ -2,9 +2,9 @@
 import React from 'react';
 
 const companies = [
-  { name: 'MOL', icon: 'fa-gas-pump', color: 'bg-red-500 shadow-red-200' },
-  { name: 'Jabil', icon: 'fa-microchip', color: 'bg-blue-600 shadow-blue-200' },
-  { name: 'Birla Carbon', icon: 'fa-industry', color: 'bg-slate-700 shadow-slate-200' },
+  { name: 'MOL', logo: '/mol-logo.jpg' },
+  { name: 'Jabil', logo: '/jabil_logo.png' },
+  { name: 'Birla Carbon', logo: '/birla_carbon_logo.jpg' },
 ];
 
 const Discounts: React.FC = () => {
@@ -35,8 +35,8 @@ const Discounts: React.FC = () => {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {companies.map((company) => (
             <div key={company.name} className="bg-white rounded-[2.5rem] p-10 shadow-sm hover:shadow-xl transition-all border border-slate-100 flex flex-col items-center text-center gap-6">
-              <div className={`w-20 h-20 ${company.color} text-white rounded-3xl flex items-center justify-center text-4xl shadow-lg`}>
-                <i className={`fas ${company.icon}`}></i>
+              <div className="w-32 h-20 flex items-center justify-center">
+                <img src={company.logo} alt={company.name} className="max-w-full max-h-full object-contain" />
               </div>
               <h3 className="text-2xl font-bold text-slate-800">{company.name}</h3>
               <p className="text-slate-500 text-sm">Érvényes fényképes belépőkártyával</p>
