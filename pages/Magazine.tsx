@@ -22,8 +22,8 @@ const Lightbox: React.FC<{ images: string[]; startIdx: number; title: string; on
   }, [images, prev, next, onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-black rounded-2xl overflow-hidden flex flex-col w-full max-w-2xl max-h-[90vh] shadow-2xl" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-end sm:items-center justify-center sm:p-4" onClick={onClose}>
+      <div className="bg-black flex flex-col w-full h-full sm:h-auto sm:max-w-2xl sm:max-h-[90vh] sm:rounded-2xl overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between px-4 py-3 flex-shrink-0 border-b border-white/10">
           <p className="text-white font-bold truncate text-sm">{title}</p>
           <div className="flex items-center gap-3">
@@ -39,7 +39,7 @@ const Lightbox: React.FC<{ images: string[]; startIdx: number; title: string; on
             key={idx}
             src={images[idx]}
             alt={title}
-            className="max-h-[55vh] max-w-full object-contain rounded-lg"
+            className="max-h-full max-w-full sm:max-h-[55vh] object-contain sm:rounded-lg"
           />
           {images.length > 1 && (
             <>
