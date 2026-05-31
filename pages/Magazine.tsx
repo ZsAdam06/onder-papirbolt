@@ -22,46 +22,48 @@ const Lightbox: React.FC<{ images: string[]; startIdx: number; title: string; on
   }, [images, prev, next, onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex flex-col" onClick={onClose}>
-      <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" onClick={e => e.stopPropagation()}>
-        <p className="text-white font-bold truncate">{title}</p>
-        <div className="flex items-center gap-3">
-          <span className="text-white/60 text-sm">{idx + 1} / {images.length}</span>
-          <button onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
-            <i className="fas fa-times"></i>
-          </button>
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-black rounded-2xl overflow-hidden flex flex-col w-full max-w-2xl max-h-[90vh] shadow-2xl" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0 border-b border-white/10">
+          <p className="text-white font-bold truncate text-sm">{title}</p>
+          <div className="flex items-center gap-3">
+            <span className="text-white/50 text-sm">{idx + 1} / {images.length}</span>
+            <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
+              <i className="fas fa-times text-sm"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="flex-grow relative flex items-center justify-center px-12" onClick={e => e.stopPropagation()}>
-        <img
-          key={idx}
-          src={images[idx]}
-          alt={title}
-          className="max-h-full max-w-full object-contain rounded-xl"
-        />
+        <div className="relative flex items-center justify-center flex-grow overflow-hidden px-10 py-4">
+          <img
+            key={idx}
+            src={images[idx]}
+            alt={title}
+            className="max-h-[55vh] max-w-full object-contain rounded-lg"
+          />
+          {images.length > 1 && (
+            <>
+              <button onClick={prev} className="absolute left-2 w-9 h-9 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
+                <i className="fas fa-chevron-left text-sm"></i>
+              </button>
+              <button onClick={next} className="absolute right-2 w-9 h-9 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
+                <i className="fas fa-chevron-right text-sm"></i>
+              </button>
+            </>
+          )}
+        </div>
+
         {images.length > 1 && (
-          <>
-            <button onClick={prev} className="absolute left-2 w-10 h-10 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
-              <i className="fas fa-chevron-left"></i>
-            </button>
-            <button onClick={next} className="absolute right-2 w-10 h-10 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
-              <i className="fas fa-chevron-right"></i>
-            </button>
-          </>
+          <div className="flex gap-2 justify-center py-3 px-4 overflow-x-auto flex-shrink-0 border-t border-white/10">
+            {images.map((src, i) => (
+              <button key={i} onClick={() => setIdx(i)}
+                className={`w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === idx ? 'border-teal-400 opacity-100' : 'border-transparent opacity-50 hover:opacity-75'}`}>
+                <img src={src} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
         )}
       </div>
-
-      {images.length > 1 && (
-        <div className="flex gap-2 justify-center py-4 px-4 overflow-x-auto flex-shrink-0" onClick={e => e.stopPropagation()}>
-          {images.map((src, i) => (
-            <button key={i} onClick={() => setIdx(i)}
-              className={`w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === idx ? 'border-teal-400 opacity-100' : 'border-transparent opacity-50 hover:opacity-75'}`}>
-              <img src={src} alt="" className="w-full h-full object-cover" />
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
