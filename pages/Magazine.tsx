@@ -6,23 +6,13 @@ const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskola
 
 const OG_FUNCTION_URL = 'https://zqojpljiozelbtrafzuv.supabase.co/functions/v1/og';
 
-const sharePost = async (post: Post) => {
-  const ogUrl = `${OG_FUNCTION_URL}?id=${post.id}`;
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: `${post.title} – Onder Papírbolt`,
-        text: post.description ?? 'Friss termék az Onder Papírboltból, Tiszaújváros',
-        url: ogUrl,
-      });
-    } catch (_) {}
-  } else {
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`,
-      '_blank',
-      'width=600,height=400'
-    );
-  }
+const getFbShareUrl = (postId: string) => {
+  const ogUrl = encodeURIComponent(`${OG_FUNCTION_URL}?id=${postId}`);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const base = isMobile
+    ? 'https://m.facebook.com/sharer.php'
+    : 'https://www.facebook.com/sharer/sharer.php';
+  return `${base}?u=${ogUrl}`;
 };
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
@@ -70,13 +60,15 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           <p className="text-xs text-slate-400">
             {new Date(post.created_at).toLocaleDateString('hu-HU')}
           </p>
-          <button
-            onClick={() => sharePost(post)}
+          <a
+            href={getFbShareUrl(post.id)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1877F2] hover:bg-[#166fe5] px-3 py-1.5 rounded-full transition-colors"
           >
             <i className="fab fa-facebook-f text-xs"></i>
             Megosztás
-          </button>
+          </a>
         </div>
       </div>
     </div>
