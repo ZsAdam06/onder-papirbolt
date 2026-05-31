@@ -4,6 +4,13 @@ import { Post } from '../types';
 
 const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskolaszer', 'Irodaszer', 'Kreatív', 'Egyéb'];
 
+const OG_FUNCTION_URL = 'https://zqojpljiozelbtrafzuv.supabase.co/functions/v1/og';
+
+const shareOnFacebook = (postId: string) => {
+  const ogUrl = `${OG_FUNCTION_URL}?id=${postId}`;
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`, '_blank', 'width=600,height=400');
+};
+
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const images = post.image_urls?.length ? post.image_urls : [post.image_url];
   const [idx, setIdx] = useState(0);
@@ -45,9 +52,18 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         {post.description && (
           <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
         )}
-        <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
-          {new Date(post.created_at).toLocaleDateString('hu-HU')}
-        </p>
+        <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+          <p className="text-xs text-slate-400">
+            {new Date(post.created_at).toLocaleDateString('hu-HU')}
+          </p>
+          <button
+            onClick={() => shareOnFacebook(post.id)}
+            className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1877F2] hover:bg-[#166fe5] px-3 py-1.5 rounded-full transition-colors"
+          >
+            <i className="fab fa-facebook-f text-xs"></i>
+            Megosztás
+          </button>
+        </div>
       </div>
     </div>
   );
