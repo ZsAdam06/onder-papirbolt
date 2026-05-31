@@ -241,6 +241,8 @@ const AdminPanel: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'list' | 'create' | { edit: Post }>('list');
+  const [fbPosting, setFbPosting] = useState<string | null>(null);
+  const [fbResult, setFbResult] = useState<{ id: string; success: boolean; message: string } | null>(null);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -255,6 +257,24 @@ const AdminPanel: React.FC = () => {
     if (!confirm('Biztosan törlöd ezt a bejegyzést?')) return;
     await supabase.from('posts').delete().eq('id', id);
     fetchPosts();
+  };
+
+  const handleFbPost = async (post: Post) => {
+    const text = prompt(`Írd be a poszthoz a szöveget (opcionális):\n\nAlapértelmezett: "${post.title}"`) ?? '';
+    if (text === null) return;
+    setFbPosting(post.id);
+    setFbResult(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('fb-post', {
+        body: { postId: post.id, message: text || post.title },
+      });
+      if (error) throw error;
+      setFbResult({ id: post.id, success: true, message: 'Sikeresen megosztva Facebookon!' });
+    } catch (err: unknown) {
+      setFbResult({ id: post.id, success: false, message: err instanceof Error ? err.message : 'Hiba történt' });
+    } finally {
+      setFbPosting(null);
+    }
   };
 
   const handleLogout = async () => {
@@ -330,19 +350,36 @@ const AdminPanel: React.FC = () => {
                         {new Date(post.created_at).toLocaleDateString('hu-HU')}
                       </p>
                     </div>
-                    <div className="flex gap-2 flex-shrink-0">
+                    <div className="flex flex-col gap-2 flex-shrink-0 items-end">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setView({ edit: post })}
+                          className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-600 transition-colors"
+                        >
+                          <i className="fas fa-pen text-xs"></i>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(post.id)}
+                          className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-colors"
+                        >
+                          <i className="fas fa-trash text-xs"></i>
+                        </button>
+                      </div>
                       <button
-                        onClick={() => setView({ edit: post })}
-                        className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-600 transition-colors"
+                        onClick={() => handleFbPost(post)}
+                        disabled={fbPosting === post.id}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1877F2] hover:bg-[#166fe5] px-3 py-1.5 rounded-xl transition-colors disabled:opacity-50"
                       >
-                        <i className="fas fa-pen text-xs"></i>
+                        {fbPosting === post.id
+                          ? <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                          : <i className="fab fa-facebook-f text-xs"></i>}
+                        Posztolás
                       </button>
-                      <button
-                        onClick={() => handleDelete(post.id)}
-                        className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-colors"
-                      >
-                        <i className="fas fa-trash text-xs"></i>
-                      </button>
+                      {fbResult?.id === post.id && (
+                        <p className={`text-xs ${fbResult.success ? 'text-teal-600' : 'text-red-500'}`}>
+                          {fbResult.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
