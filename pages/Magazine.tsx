@@ -6,10 +6,8 @@ const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskola
 
 const OG_FUNCTION_URL = 'https://zqojpljiozelbtrafzuv.supabase.co/functions/v1/og';
 
-const shareOnFacebook = (postId: string) => {
-  const ogUrl = `${OG_FUNCTION_URL}?id=${postId}`;
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`, '_blank', 'width=600,height=400');
-};
+const getFacebookShareUrl = (postId: string) =>
+  `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${OG_FUNCTION_URL}?id=${postId}`)}`;
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const images = post.image_urls?.length ? post.image_urls : [post.image_url];
@@ -56,13 +54,15 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           <p className="text-xs text-slate-400">
             {new Date(post.created_at).toLocaleDateString('hu-HU')}
           </p>
-          <button
-            onClick={() => shareOnFacebook(post.id)}
+          <a
+            href={getFacebookShareUrl(post.id)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1877F2] hover:bg-[#166fe5] px-3 py-1.5 rounded-full transition-colors"
           >
             <i className="fab fa-facebook-f text-xs"></i>
             Megosztás
-          </button>
+          </a>
         </div>
       </div>
     </div>
