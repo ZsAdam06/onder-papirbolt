@@ -4,53 +4,110 @@ import { Post } from '../types';
 
 const CATEGORIES = ['Összes', 'Írószer', 'Papíráru', 'Rajzeszköz', 'Iskolaszer', 'Irodaszer', 'Kreatív', 'Egyéb'];
 
+const Lightbox: React.FC<{ images: string[]; startIdx: number; title: string; onClose: () => void }> = ({ images, startIdx, title, onClose }) => {
+  const [idx, setIdx] = useState(startIdx);
+  const prev = useCallback(() => setIdx(i => (i - 1 + images.length) % images.length), [images.length]);
+  const next = useCallback(() => setIdx(i => (i + 1) % images.length), [images.length]);
 
-const PostCard: React.FC<{ post: Post }> = ({ post }) => {
-  const images = post.image_urls?.length ? post.image_urls : [post.image_url];
-  const [idx, setIdx] = useState(0);
-  const prev = useCallback((e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length); }, [images.length]);
-  const next = useCallback((e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i + 1) % images.length); }, [images.length]);
+  useEffect(() => {
+    images.forEach(src => { const img = new Image(); img.src = src; });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [images, prev, next, onClose]);
 
   return (
-    <div className="group relative overflow-hidden bg-white rounded-2xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-slate-100">
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <img
-          src={images[idx]}
-          alt={post.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur shadow-md px-3 py-1 rounded-full text-xs font-bold text-teal-600 uppercase tracking-widest">
-          {post.category}
+    <div className="fixed inset-0 z-50 bg-black/95 flex flex-col" onClick={onClose}>
+      <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" onClick={e => e.stopPropagation()}>
+        <p className="text-white font-bold truncate">{title}</p>
+        <div className="flex items-center gap-3">
+          <span className="text-white/60 text-sm">{idx + 1} / {images.length}</span>
+          <button onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
+            <i className="fas fa-times"></i>
+          </button>
         </div>
+      </div>
+
+      <div className="flex-grow relative flex items-center justify-center px-12" onClick={e => e.stopPropagation()}>
+        <img
+          key={idx}
+          src={images[idx]}
+          alt={title}
+          className="max-h-full max-w-full object-contain rounded-xl"
+        />
         {images.length > 1 && (
           <>
-            <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <i className="fas fa-chevron-left text-xs"></i>
+            <button onClick={prev} className="absolute left-2 w-10 h-10 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
+              <i className="fas fa-chevron-left"></i>
             </button>
-            <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <i className="fas fa-chevron-right text-xs"></i>
+            <button onClick={next} className="absolute right-2 w-10 h-10 bg-white/10 hover:bg-white/25 text-white rounded-full flex items-center justify-center transition-colors">
+              <i className="fas fa-chevron-right"></i>
             </button>
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-              {images.map((_, i) => (
-                <button key={i} onClick={e => { e.stopPropagation(); setIdx(i); }}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-white w-3' : 'bg-white/50'}`}
-                />
-              ))}
-            </div>
           </>
         )}
       </div>
-      <div className="p-6 flex flex-col flex-grow text-center">
-        <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight">{post.title}</h3>
-        {post.description && (
-          <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
-        )}
-        <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
-          {new Date(post.created_at).toLocaleDateString('hu-HU')}
-        </p>
-      </div>
+
+      {images.length > 1 && (
+        <div className="flex gap-2 justify-center py-4 px-4 overflow-x-auto flex-shrink-0" onClick={e => e.stopPropagation()}>
+          {images.map((src, i) => (
+            <button key={i} onClick={() => setIdx(i)}
+              className={`w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === idx ? 'border-teal-400 opacity-100' : 'border-transparent opacity-50 hover:opacity-75'}`}>
+              <img src={src} alt="" className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
+  );
+};
+
+const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+  const images = post.image_urls?.length ? post.image_urls : [post.image_url];
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  return (
+    <>
+      <div
+        className="group relative overflow-hidden bg-white rounded-2xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-slate-100 cursor-pointer"
+        onClick={() => setLightboxOpen(true)}
+      >
+        <div className="relative aspect-[3/4] overflow-hidden">
+          <img
+            src={images[0]}
+            alt={post.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur shadow-md px-3 py-1 rounded-full text-xs font-bold text-teal-600 uppercase tracking-widest">
+            {post.category}
+          </div>
+          {images.length > 1 && (
+            <div className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <i className="fas fa-images text-xs"></i>
+              {images.length} kép
+            </div>
+          )}
+        </div>
+        <div className="p-6 flex flex-col flex-grow text-center">
+          <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight">{post.title}</h3>
+          {post.description && (
+            <p className="text-slate-500 text-sm mb-4 flex-grow italic">"{post.description}"</p>
+          )}
+          <p className="text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
+            {new Date(post.created_at).toLocaleDateString('hu-HU')}
+          </p>
+        </div>
+      </div>
+      {lightboxOpen && (
+        <Lightbox images={images} startIdx={0} title={post.title} onClose={() => setLightboxOpen(false)} />
+      )}
+    </>
   );
 };
 
