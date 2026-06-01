@@ -14,7 +14,7 @@ export const CONTACT_DATA: ContactInfo = {
 
 export const OPENING_HOURS: OpeningHours[] = [
   { day: "Hétfő - Péntek", hours: "08:00 - 17:00", lunchBreak: "12:00 - 13:00" },
-  { day: "Szombat", hours: "08:00 - 12:00" },
+  { day: "Szombat", hours: "09:00 - 12:00" },
   { day: "Vasárnap", hours: "Zárva" }
 ];
 
