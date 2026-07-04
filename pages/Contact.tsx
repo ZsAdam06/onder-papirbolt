@@ -1,8 +1,12 @@
 
-import React from 'react';
-import { CONTACT_DATA, OPENING_HOURS, MAP_EMBED_URL } from '../constants';
+import React, { useState } from 'react';
+import { CONTACT_DATA, OPENING_HOURS } from '../constants';
+
+const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=ONDER+Pap%C3%ADr+Tiszaújváros";
 
 const Contact: React.FC = () => {
+  const [mapLoaded, setMapLoaded] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -76,21 +80,48 @@ const Contact: React.FC = () => {
 
           {/* Map Section */}
           <div className="h-[600px] lg:h-full rounded-[2rem] overflow-hidden shadow-2xl relative">
-            <iframe
-              src={MAP_EMBED_URL}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={true}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Shop Location"
-              className="grayscale hover:grayscale-0 transition-all duration-700"
-            ></iframe>
-            <div className="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur p-6 rounded-2xl shadow-xl border border-white/50">
-              <p className="text-slate-800 font-bold mb-1">Tiszaújváros szívében!</p>
-              <p className="text-slate-500 text-sm">A Barcsay Jenő térnél, könnyen megközelíthető helyen várjuk.</p>
-            </div>
+            {mapLoaded ? (
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1134.9878272525652!2d21.03365732973571!3d47.93082600886604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4740ae785cacd12b%3A0xf45da16884906507!2sONDER%20Pap%C3%ADr!5e0!3m2!1shu!2sus!4v1769468688790!5m2!1shu!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Onder Papírbolt helyszíne"
+              />
+            ) : (
+              <div className="w-full h-full bg-slate-100 flex flex-col items-center justify-center gap-6 p-8">
+                <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
+                  <i className="fas fa-map-marker-alt text-teal-600 text-3xl"></i>
+                </div>
+                <div className="text-center">
+                  <p className="text-slate-800 font-bold text-lg mb-1">3580 Tiszaújváros</p>
+                  <p className="text-slate-500">Barcsay Jenő tér 4.</p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => setMapLoaded(true)}
+                    className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
+                  >
+                    <i className="fas fa-map mr-2"></i>Térkép betöltése
+                  </button>
+                  <a
+                    href={MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white hover:bg-slate-50 text-slate-700 font-semibold px-6 py-3 rounded-xl border border-slate-200 transition-colors text-sm text-center"
+                  >
+                    <i className="fas fa-external-link-alt mr-2"></i>Megnyitás Google Maps-ben
+                  </a>
+                </div>
+                <p className="text-slate-400 text-xs text-center max-w-xs">
+                  A térkép betöltésekor a Google adatait is elfogadja. Részletek az{' '}
+                  <a href="#/adatvedelem" className="underline hover:text-slate-600">Adatvédelmi tájékoztatóban</a>.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

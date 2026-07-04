@@ -61,8 +61,12 @@ const Footer: React.FC = () => {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-teal-800 text-center text-sm">
-        <p>&copy; {new Date().getFullYear()} {SHOP_NAME}. Minden jog fenntartva.</p>
+      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-teal-800 text-center text-sm space-y-3">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="#/impresszum" className="text-teal-300 hover:text-white transition-colors">Impresszum</a>
+          <a href="#/adatvedelem" className="text-teal-300 hover:text-white transition-colors">Adatvédelmi tájékoztató</a>
+        </div>
+        <p className="text-teal-400">&copy; {new Date().getFullYear()} {SHOP_NAME}. Minden jog fenntartva.</p>
       </div>
     </footer>
   );
