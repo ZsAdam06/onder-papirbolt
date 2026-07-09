@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { CONTACT_DATA, OPENING_HOURS } from '../constants';
+import { CONTACT_DATA, OPENING_HOURS, MAP_EMBED_URL } from '../constants';
+import { getOpenStatus } from '../lib/openingStatus';
 
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=ONDER+Pap%C3%ADr+Tiszaújváros";
 
@@ -43,35 +44,51 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Telefonszám</h4>
-                    <p className="text-lg font-medium text-slate-800">{CONTACT_DATA.phone}</p>
+                    <a href={`tel:${CONTACT_DATA.phone.replace(/\s/g, '')}`} className="text-lg font-medium text-slate-800 hover:text-teal-600 transition-colors">{CONTACT_DATA.phone}</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-teal-600 text-xl flex-shrink-0">
                     <i className="fas fa-envelope"></i>
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">E-mail cím</h4>
-                    <p className="text-lg font-medium text-slate-800">{CONTACT_DATA.email}</p>
+                    <a href={`mailto:${CONTACT_DATA.email}`} className="text-lg font-medium text-slate-800 hover:text-teal-600 transition-colors break-all">{CONTACT_DATA.email}</a>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="pt-8 border-t border-slate-100">
-              <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+              <h3 className="text-2xl font-bold mb-8 flex items-center gap-3 flex-wrap">
                 <div className="w-10 h-10 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm">
                   <i className="fas fa-clock"></i>
                 </div>
                 Nyitvatartás
+                {(() => {
+                  const status = getOpenStatus();
+                  return (
+                    <span className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full ${
+                      status.isOpen ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <span className={`w-2 h-2 rounded-full ${status.isOpen ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
+                      {status.label}
+                    </span>
+                  );
+                })()}
               </h3>
               <div className="bg-slate-50 rounded-2xl p-6 space-y-4">
                 {OPENING_HOURS.map((oh) => (
-                  <div key={oh.day} className="flex justify-between items-center">
-                    <span className="font-semibold text-slate-600">{oh.day}</span>
-                    <span className="text-slate-800 bg-white px-4 py-1.5 rounded-full text-sm font-bold shadow-sm">
-                      {oh.hours}
-                    </span>
+                  <div key={oh.day}>
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-slate-600">{oh.day}</span>
+                      <span className="text-slate-800 bg-white px-4 py-1.5 rounded-full text-sm font-bold shadow-sm">
+                        {oh.hours}
+                      </span>
+                    </div>
+                    {oh.lunchBreak && (
+                      <p className="text-xs text-slate-400 mt-1 text-right">Ebédszünet: {oh.lunchBreak}</p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -82,7 +99,7 @@ const Contact: React.FC = () => {
           <div className="h-[600px] lg:h-full rounded-[2rem] overflow-hidden shadow-2xl relative">
             {mapLoaded ? (
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1134.9878272525652!2d21.03365732973571!3d47.93082600886604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4740ae785cacd12b%3A0xf45da16884906507!2sONDER%20Pap%C3%ADr!5e0!3m2!1shu!2sus!4v1769468688790!5m2!1shu!2sus"
+                src={MAP_EMBED_URL}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

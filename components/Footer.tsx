@@ -1,11 +1,12 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { CONTACT_DATA, OPENING_HOURS, SHOP_NAME } from '../constants';
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-teal-900 text-teal-100 py-12 px-4 mt-auto">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand Section */}
         <div>
           <div className="bg-white rounded-xl px-4 py-2 inline-block mb-6">
@@ -22,21 +23,42 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Quick links */}
+        <div>
+          <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Oldalak</h4>
+          <ul className="space-y-3">
+            {[
+              { name: 'Kezdőlap', path: '/' },
+              { name: 'Termékújság', path: '/ujsag' },
+              { name: 'Szolgáltatások', path: '/szolgaltatasok' },
+              { name: 'Kedvezmények', path: '/kedvezmenyek' },
+              { name: 'Kapcsolat', path: '/kapcsolat' },
+            ].map((link) => (
+              <li key={link.path}>
+                <Link to={link.path} className="hover:text-white transition-colors flex items-center gap-2">
+                  <i className="fas fa-chevron-right text-xs text-teal-400" aria-hidden="true"></i>
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {/* Links / Contact */}
         <div>
           <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Elérhetőség</h4>
           <ul className="space-y-4">
             <li className="flex items-start gap-3">
-              <i className="fas fa-map-marker-alt mt-1 text-teal-400"></i>
+              <i className="fas fa-map-marker-alt mt-1 text-teal-400" aria-hidden="true"></i>
               <span>{CONTACT_DATA.address}</span>
             </li>
             <li className="flex items-center gap-3">
-              <i className="fas fa-phone text-teal-400"></i>
-              <span>{CONTACT_DATA.phone}</span>
+              <i className="fas fa-phone text-teal-400" aria-hidden="true"></i>
+              <a href={`tel:${CONTACT_DATA.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{CONTACT_DATA.phone}</a>
             </li>
             <li className="flex items-center gap-3">
-              <i className="fas fa-envelope text-teal-400"></i>
-              <span>{CONTACT_DATA.email}</span>
+              <i className="fas fa-envelope text-teal-400" aria-hidden="true"></i>
+              <a href={`mailto:${CONTACT_DATA.email}`} className="hover:text-white transition-colors break-all">{CONTACT_DATA.email}</a>
             </li>
           </ul>
         </div>
@@ -63,8 +85,8 @@ const Footer: React.FC = () => {
       </div>
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-teal-800 text-center text-sm space-y-3">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          <a href="#/impresszum" className="text-teal-300 hover:text-white transition-colors">Impresszum</a>
-          <a href="#/adatvedelem" className="text-teal-300 hover:text-white transition-colors">Adatvédelmi tájékoztató</a>
+          <Link to="/impresszum" className="text-teal-300 hover:text-white transition-colors">Impresszum</Link>
+          <Link to="/adatvedelem" className="text-teal-300 hover:text-white transition-colors">Adatvédelmi tájékoztató</Link>
         </div>
         <p className="text-teal-400">&copy; {new Date().getFullYear()} {SHOP_NAME}. Minden jog fenntartva.</p>
       </div>

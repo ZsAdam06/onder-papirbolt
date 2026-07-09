@@ -4,6 +4,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CookieBanner from './components/CookieBanner';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Magazine from './pages/Magazine';
 import Contact from './pages/Contact';
@@ -16,6 +17,7 @@ import Adatvedelem from './pages/Adatvedelem';
 const App: React.FC = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={

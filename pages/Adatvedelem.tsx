@@ -67,19 +67,14 @@ const Adatvedelem: React.FC = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200">Font Awesome (cdnjs)</td>
-                    <td className="p-3 border border-slate-200">Ikonkészlet megjelenítése</td>
-                    <td className="p-3 border border-slate-200">Nem helyez el sütiket</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200">Tailwind CSS (CDN)</td>
-                    <td className="p-3 border border-slate-200">Oldal megjelenése</td>
-                    <td className="p-3 border border-slate-200">Nem helyez el sütiket</td>
-                  </tr>
-                  <tr>
                     <td className="p-3 border border-slate-200">Google Maps</td>
                     <td className="p-3 border border-slate-200">Térkép megjelenítése</td>
                     <td className="p-3 border border-slate-200">Csak kifejezett kattintás után töltődik be; a Google saját adatvédelmi szabályzata érvényes</td>
+                  </tr>
+                  <tr className="bg-slate-50">
+                    <td className="p-3 border border-slate-200">Facebook (Meta)</td>
+                    <td className="p-3 border border-slate-200">Facebook-idővonal megjelenítése</td>
+                    <td className="p-3 border border-slate-200">Csak kifejezett kattintás után töltődik be; a Meta saját adatvédelmi szabályzata érvényes</td>
                   </tr>
                 </tbody>
               </table>
@@ -97,9 +92,9 @@ const Adatvedelem: React.FC = () => {
           <Section icon="fas fa-cookie-bite" title="4. Sütik (cookie-k)">
             <p>
               Ez a weboldal <strong>nem használ saját nyomkövető vagy marketing sütiket</strong>.
-              A Google Maps funkció – amely csak az Ön kifejezett kérésére töltődik be –
-              a Google saját sütiit helyezheti el. Ezek a Google adatvédelmi szabályzata
-              alapján kezelendők.
+              A Google Maps térkép és a Facebook-idővonal – amelyek csak az Ön kifejezett
+              kérésére töltődnek be – a Google, illetve a Meta saját sütijeit helyezhetik el.
+              Ezek az adott szolgáltató adatvédelmi szabályzata alapján kezelendők.
             </p>
           </Section>
 

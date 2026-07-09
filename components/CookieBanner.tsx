@@ -25,8 +25,8 @@ const CookieBanner: React.FC = () => {
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <i className="fas fa-cookie-bite text-teal-400 mt-0.5 flex-shrink-0"></i>
           <p className="text-sm text-slate-300 leading-relaxed">
-            Ez az oldal alapvető működési sütiket és külső CDN-szolgáltatásokat (Font Awesome, Tailwind) alkalmaz.
-            A Google Maps térkép csak az Ön kérésére töltődik be.{' '}
+            Ez az oldal kizárólag alapvető működési sütiket használ.
+            A Google Maps térkép és a Facebook idővonal csak az Ön kérésére töltődik be.{' '}
             <a href="#/adatvedelem" className="text-teal-400 hover:text-teal-300 underline">
               Adatvédelmi tájékoztató
             </a>
