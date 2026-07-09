@@ -6,6 +6,8 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/playfair-display/700.css';
 import '@fontsource/playfair-display/700-italic.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';

@@ -113,6 +113,69 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   );
 };
 
+const SkeletonCard: React.FC = () => (
+  <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden animate-pulse">
+    <div className="aspect-[3/4] bg-slate-200"></div>
+    <div className="p-6 space-y-3">
+      <div className="h-5 bg-slate-200 rounded-full w-3/4 mx-auto"></div>
+      <div className="h-3 bg-slate-100 rounded-full w-1/2 mx-auto"></div>
+    </div>
+  </div>
+);
+
+const FACEBOOK_PAGE_URL = 'https://www.facebook.com/p/ONDER-Pap%C3%ADr-100063292235639/';
+
+const FacebookEmbed: React.FC = () => {
+  const [loaded, setLoaded] = useState(false);
+
+  if (!loaded) {
+    return (
+      <div className="w-full max-w-lg bg-slate-50 rounded-2xl border border-slate-200 flex flex-col items-center justify-center gap-5 p-10 text-center">
+        <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center">
+          <i className="fab fa-facebook text-teal-600 text-3xl" aria-hidden="true"></i>
+        </div>
+        <p className="text-slate-600">Kövesse legfrissebb híreinket és akcióinkat Facebook-oldalunkon!</p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => setLoaded(true)}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
+          >
+            <i className="fab fa-facebook mr-2" aria-hidden="true"></i>Idővonal betöltése
+          </button>
+          <a
+            href={FACEBOOK_PAGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white hover:bg-slate-100 text-slate-700 font-semibold px-6 py-3 rounded-xl border border-slate-200 transition-colors text-sm"
+          >
+            <i className="fas fa-external-link-alt mr-2" aria-hidden="true"></i>Megnyitás Facebookon
+          </a>
+        </div>
+        <p className="text-slate-400 text-xs max-w-xs">
+          Az idővonal betöltésekor a Facebook (Meta) adatait is elfogadja. Részletek az{' '}
+          <a href="#/adatvedelem" className="underline hover:text-slate-600">Adatvédelmi tájékoztatóban</a>.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-4 rounded-3xl shadow-xl overflow-hidden max-w-full">
+      <iframe
+        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fp%2FONDER-Pap%25C3%25ADr-100063292235639%2F&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+        width="500"
+        height="700"
+        style={{ border: 'none', overflow: 'hidden', maxWidth: '100%' }}
+        scrolling="no"
+        frameBorder="0"
+        allowFullScreen={true}
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        title="Facebook Feed"
+      ></iframe>
+    </div>
+  );
+};
+
 const Magazine: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -170,8 +233,8 @@ const Magazine: React.FC = () => {
       {/* Posts grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-24">
@@ -197,22 +260,10 @@ const Magazine: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 mb-12">
         <div className="flex flex-col items-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
-            <i className="fab fa-facebook text-teal-600"></i>
+            <i className="fab fa-facebook text-teal-600" aria-hidden="true"></i>
             Kövess minket Facebookon!
           </h2>
-          <div className="bg-white p-4 rounded-3xl shadow-xl overflow-hidden max-w-full">
-            <iframe
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fp%2FONDER-Pap%25C3%25ADr-100063292235639%2F&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-              width="500"
-              height="700"
-              style={{ border: 'none', overflow: 'hidden', maxWidth: '100%' }}
-              scrolling="no"
-              frameBorder="0"
-              allowFullScreen={true}
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              title="Facebook Feed"
-            ></iframe>
-          </div>
+          <FacebookEmbed />
         </div>
       </div>
 
