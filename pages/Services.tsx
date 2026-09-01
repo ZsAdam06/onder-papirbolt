@@ -53,25 +53,29 @@ const Services: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
-          {serviceCategories.map((cat, idx) => (
-            <div key={idx} className="bg-white p-6 sm:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-slate-100 flex gap-5 sm:gap-8 items-start">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-teal-600 text-white rounded-xl sm:rounded-2xl flex items-center justify-center text-xl sm:text-3xl flex-shrink-0 shadow-lg shadow-teal-200">
-                <i className={`fas ${cat.icon}`}></i>
-              </div>
-              <div className="min-w-0">
-                <h3 className="text-lg sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">{cat.title}</h3>
-                <ul className="space-y-3 sm:space-y-4">
+        <div className="max-w-5xl mx-auto border-t border-slate-200">
+          {serviceCategories.map((cat, idx) => {
+            const accent = idx % 2 === 0 ? 'teal' : 'orange';
+            return (
+              <div
+                key={idx}
+                className={`flex flex-col ${idx % 2 === 1 ? 'sm:flex-row-reverse' : 'sm:flex-row'} gap-6 sm:gap-16 items-start py-12 sm:py-14 border-b border-slate-200`}
+              >
+                <div className="sm:w-64 shrink-0 flex items-center gap-4 sm:flex-col sm:items-center sm:text-center">
+                  <i className={`fas ${cat.icon} text-3xl ${accent === 'teal' ? 'text-teal-600' : 'text-orange-500'}`} aria-hidden="true"></i>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-800 brand-font italic sm:mt-4">{cat.title}</h3>
+                </div>
+                <ul className="space-y-3 sm:space-y-4 flex-1">
                   {cat.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-slate-600">
-                      <div className="w-1.5 h-1.5 bg-teal-400 rounded-full mt-2 flex-shrink-0"></div>
+                      <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${accent === 'teal' ? 'bg-teal-400' : 'bg-orange-400'}`}></div>
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-16 sm:mt-24 bg-white rounded-3xl sm:rounded-[3rem] p-8 sm:p-12 text-center border-4 border-teal-50">

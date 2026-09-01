@@ -16,7 +16,7 @@ const Adatvedelem: React.FC = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-black text-slate-900 mb-4 italic brand-font">Adatvédelmi tájékoztató</h1>
-          <p className="text-slate-500">Hatályos: 2025. január 1-től</p>
+          <p className="text-slate-500">Hatályos: 2026. augusztustól</p>
         </div>
 
         <div className="bg-white rounded-[2rem] shadow-sm p-8 md:p-12 space-y-10">
@@ -142,7 +142,7 @@ const Adatvedelem: React.FC = () => {
           <div className="border-t border-slate-100" />
 
           <p className="text-slate-400 text-xs text-center">
-            Onder Trade Kft. – Utoljára módosítva: 2025. január
+            Onder Trade Kft. – Utoljára módosítva: 2026. augusztus
           </p>
         </div>
       </div>

@@ -16,8 +16,8 @@ const Footer: React.FC = () => {
             Tiszaújváros szívében várunk minden kedves vásárlót széles papír-írószer választékkal és professzionális irodai szolgáltatásokkal.
           </p>
           <div className="flex space-x-4">
-            <a href={CONTACT_DATA.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-teal-800 flex items-center justify-center hover:bg-teal-600 transition-colors">
-              <i className="fab fa-facebook-f"></i>
+            <a href={CONTACT_DATA.facebook} target="_blank" rel="noopener noreferrer" aria-label="Onder Papírbolt Facebook oldala" className="w-10 h-10 rounded-full bg-teal-800 flex items-center justify-center hover:bg-teal-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300">
+              <i className="fab fa-facebook-f" aria-hidden="true"></i>
             </a>
 
           </div>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
               { name: 'Kapcsolat', path: '/kapcsolat' },
             ].map((link) => (
               <li key={link.path}>
-                <Link to={link.path} className="hover:text-white transition-colors flex items-center gap-2">
+                <Link to={link.path} className="hover:text-white transition-colors flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 rounded">
                   <i className="fas fa-chevron-right text-xs text-teal-400" aria-hidden="true"></i>
                   {link.name}
                 </Link>
@@ -54,11 +54,11 @@ const Footer: React.FC = () => {
             </li>
             <li className="flex items-center gap-3">
               <i className="fas fa-phone text-teal-400" aria-hidden="true"></i>
-              <a href={`tel:${CONTACT_DATA.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{CONTACT_DATA.phone}</a>
+              <a href={`tel:${CONTACT_DATA.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 rounded">{CONTACT_DATA.phone}</a>
             </li>
             <li className="flex items-center gap-3">
               <i className="fas fa-envelope text-teal-400" aria-hidden="true"></i>
-              <a href={`mailto:${CONTACT_DATA.email}`} className="hover:text-white transition-colors break-all">{CONTACT_DATA.email}</a>
+              <a href={`mailto:${CONTACT_DATA.email}`} className="hover:text-white transition-colors break-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 rounded">{CONTACT_DATA.email}</a>
             </li>
           </ul>
         </div>
@@ -85,8 +85,8 @@ const Footer: React.FC = () => {
       </div>
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-teal-800 text-center text-sm space-y-3">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          <Link to="/impresszum" className="text-teal-300 hover:text-white transition-colors">Impresszum</Link>
-          <Link to="/adatvedelem" className="text-teal-300 hover:text-white transition-colors">Adatvédelmi tájékoztató</Link>
+          <Link to="/impresszum" className="text-teal-300 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 rounded">Impresszum</Link>
+          <Link to="/adatvedelem" className="text-teal-300 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 rounded">Adatvédelmi tájékoztató</Link>
         </div>
         <p className="text-teal-400">&copy; {new Date().getFullYear()} {SHOP_NAME}. Minden jog fenntartva.</p>
       </div>

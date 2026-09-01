@@ -10,59 +10,58 @@ const Home: React.FC = () => {
   return (
     <div className="pb-24">
       {/* Hero Section */}
-      <section className="relative min-h-[88vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[75vh] sm:min-h-[85vh] flex items-center overflow-hidden py-16 sm:py-24">
         <div className="absolute inset-0 z-0">
           <img
             src="/hero.jpg"
-            alt="Színes ceruzák háttér"
+            alt=""
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/80 via-slate-900/60 to-teal-900/50"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-slate-900/[0.03]"></div>
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center sm:text-left">
-          <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold mb-6 backdrop-blur-md border ${
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-xl mx-auto sm:mx-0 bg-white/95 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/70 p-8 sm:p-12 text-center sm:text-left animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold mb-6 border ${
               status.isOpen
-                ? 'bg-emerald-400/15 border-emerald-300/30 text-emerald-200'
-                : 'bg-white/10 border-white/20 text-white/80'
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                : 'bg-slate-100 border-slate-200 text-slate-500'
             }`}>
               <span className="relative flex h-2.5 w-2.5">
-                {status.isOpen && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
-                <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${status.isOpen ? 'bg-emerald-400' : 'bg-slate-400'}`}></span>
+                {status.isOpen && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>}
+                <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${status.isOpen ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
               </span>
               {status.label}
             </div>
 
-            <span className="text-orange-300 font-bold uppercase tracking-widest text-sm mb-4 block">
+            <p className="text-orange-600 text-lg sm:text-xl italic brand-font mb-3">
               Tiszaújváros papírboltja évtizedek óta
-            </span>
-            <h1 className="text-5xl md:text-7xl text-white mb-6 leading-tight font-black">
-              Mindig <span className="text-orange-300 italic">számíthat</span> ránk.
+            </p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl text-slate-900 mb-6 leading-tight font-black">
+              Mindig <span className="text-orange-600 italic">számíthat</span> ránk.
             </h1>
-            <p className="text-xl text-white/85 mb-10 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl text-slate-600 mb-8 sm:mb-10 leading-relaxed font-light">
               Ahol személyesen segítenek, nem csak kiszolgálnak. Egy igazi helyi bolt, ahogy régen volt.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-start">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 justify-center sm:justify-start">
               <Link
                 to="/ujsag"
-                className="bg-orange-500 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-orange-400 transition-all shadow-xl shadow-orange-950/30 hover:scale-105 active:scale-95 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                className="bg-orange-500 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-orange-400 transition-all shadow-xl shadow-orange-950/20 hover:scale-105 active:scale-95 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
               >
                 Aktuális Termékújság
               </Link>
               <Link
                 to="/szolgaltatasok"
-                className="bg-white/10 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-full text-lg font-bold hover:bg-white/20 transition-all text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="text-teal-700 font-bold hover:text-teal-800 transition-colors inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 rounded"
               >
-                Szolgáltatásaink
+                Szolgáltatásaink <i className="fas fa-arrow-right text-sm" aria-hidden="true"></i>
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 animate-bounce hidden md:block z-10">
-          <i className="fas fa-chevron-down text-white/50 text-2xl" aria-hidden="true"></i>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-soft-float hidden md:block z-10">
+          <i className="fas fa-chevron-down text-slate-400 text-2xl" aria-hidden="true"></i>
         </div>
       </section>
 
@@ -83,7 +82,10 @@ const Home: React.FC = () => {
               <p className="font-semibold text-slate-800 text-sm truncate">Barcsay Jenő tér 4.</p>
             </div>
           </a>
-          <div className="flex items-center gap-4 p-6">
+          <Link
+            to="/kapcsolat"
+            className="flex items-center gap-4 p-6 hover:bg-slate-50 transition-colors"
+          >
             <div className="w-11 h-11 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-lg shrink-0">
               <i className="fas fa-clock" aria-hidden="true"></i>
             </div>
@@ -91,7 +93,7 @@ const Home: React.FC = () => {
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Nyitvatartás</p>
               <p className="font-semibold text-slate-800 text-sm truncate">{getTodayHours()}</p>
             </div>
-          </div>
+          </Link>
           <a href={`tel:${CONTACT_DATA.phone.replace(/\s/g, '')}`} className="flex items-center gap-4 p-6 hover:bg-slate-50 transition-colors">
             <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg shrink-0">
               <i className="fas fa-phone" aria-hidden="true"></i>
@@ -117,7 +119,7 @@ const Home: React.FC = () => {
             />
           </div>
           <div>
-            <span className="text-teal-600 font-bold uppercase tracking-widest text-sm mb-4 block">Helyi vállalkozás, szívvel-lélekkel</span>
+            <p className="text-teal-600 text-lg sm:text-xl italic brand-font mb-3">Helyi vállalkozás, szívvel-lélekkel</p>
             <h2 className="text-4xl font-bold text-slate-800 mb-6 leading-tight">
               Tiszaújváros papírboltja<br /><span className="text-teal-600">évtizedek óta</span>
             </h2>
@@ -148,30 +150,30 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured Services Mini */}
+      {/* Featured Services */}
       <section className="bg-slate-100 py-24 mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-          <span className="text-teal-600 font-bold uppercase tracking-widest text-sm mb-4 block">Szolgáltatások</span>
           <h2 className="text-4xl font-bold text-slate-800 mb-4">Miben segíthetünk?</h2>
           <p className="text-slate-500 max-w-2xl mx-auto text-lg">Termékeinken túl számos szolgáltatással várjuk üzletünkben.</p>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-200">
           {[
-            { icon: 'fa-star', title: 'Egyedi Megrendelések', desc: 'Céges és intézményi rendelések, nehezen beszerezhető termékek felkutatása.' },
-            { icon: 'fa-stamp', title: 'Bélyegzők', desc: 'Egyedi bélyegzők kizárólag előre leadott megrendelés alapján.' },
-            { icon: 'fa-school', title: 'Iskolakezdési Csomagok', desc: 'Osztályonként összeállított füzetcsomagok, időt és energiát spórolva a szülőknek.' },
-            { icon: 'fa-puzzle-piece', title: 'Fejlesztő Játékok', desc: 'Készségfejlesztő játékok, foglalkoztató füzetek és kreatív színezők.' },
+            { icon: 'fa-star', title: 'Egyedi Megrendelések', desc: 'Céges és intézményi rendelések, nehezen beszerezhető termékek felkutatása.', accent: 'teal' },
+            { icon: 'fa-stamp', title: 'Bélyegzők', desc: 'Egyedi bélyegzők kizárólag előre leadott megrendelés alapján.', accent: 'orange' },
+            { icon: 'fa-school', title: 'Iskolakezdési Csomagok', desc: 'Osztályonként összeállított füzetcsomagok, időt és energiát spórolva a szülőknek.', accent: 'teal' },
+            { icon: 'fa-puzzle-piece', title: 'Fejlesztő Játékok', desc: 'Készségfejlesztő játékok, foglalkoztató füzetek és kreatív színezők.', accent: 'orange' },
           ].map((s, idx) => (
             <Link
               to="/szolgaltatasok"
               key={idx}
-              className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 block"
+              className="group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-10 py-8 border-b border-slate-200 hover:bg-white/70 transition-colors -mx-4 px-4 sm:-mx-6 sm:px-6 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-700 text-white rounded-2xl flex items-center justify-center text-2xl mb-6 mx-auto shadow-lg shadow-teal-200 group-hover:scale-110 transition-transform duration-300">
-                <i className={`fas ${s.icon}`} aria-hidden="true"></i>
+              <div className="flex items-center gap-4 sm:w-72 shrink-0">
+                <i className={`fas ${s.icon} text-2xl ${s.accent === 'teal' ? 'text-teal-600' : 'text-orange-500'}`} aria-hidden="true"></i>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-800">{s.title}</h3>
               </div>
-              <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+              <p className="text-slate-500 text-base leading-relaxed flex-1">{s.desc}</p>
+              <i className="fas fa-arrow-right text-slate-300 group-hover:text-teal-600 group-hover:translate-x-1 transition-all hidden sm:block" aria-hidden="true"></i>
             </Link>
           ))}
         </div>
@@ -183,7 +185,7 @@ const Home: React.FC = () => {
           to="/kedvezmenyek"
           className="group flex flex-col sm:flex-row items-center gap-6 bg-white border border-slate-100 rounded-3xl p-8 sm:p-10 shadow-sm hover:shadow-xl transition-all"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-lg shadow-orange-200 group-hover:scale-110 transition-transform duration-300">
+          <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-2xl flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform duration-300">
             <i className="fas fa-percent" aria-hidden="true"></i>
           </div>
           <div className="flex-grow text-center sm:text-left">

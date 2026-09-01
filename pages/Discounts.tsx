@@ -21,7 +21,7 @@ const Discounts: React.FC = () => {
 
         <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-sm border border-slate-100 mb-12">
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-lg shadow-teal-200">
+            <div className="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
               <i className="fas fa-percent"></i>
             </div>
             <h2 className="text-3xl font-bold text-slate-800">10% kedvezmény munkavállalóknak</h2>

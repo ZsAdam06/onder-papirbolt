@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
+import { compressImage } from '../lib/imageCompress';
 import { Post } from '../types';
 
 const CATEGORIES = ['Írószer', 'Papíráru', 'Rajzeszköz', 'Iskolaszer', 'Irodaszer', 'Kreatív', 'Egyéb'];
@@ -24,7 +25,7 @@ const LoginForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
     <div className="min-h-screen bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center px-4">
       <div className="bg-white rounded-[2rem] shadow-2xl p-8 w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-200">
+          <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i className="fas fa-lock text-white text-2xl"></i>
           </div>
           <h1 className="text-2xl font-black text-slate-800 brand-font italic">Onder Admin</h1>
@@ -105,7 +106,8 @@ const PostForm: React.FC<{
     setError('');
     try {
       const uploadedUrls: string[] = [];
-      for (const file of newFiles) {
+      for (const rawFile of newFiles) {
+        const file = await compressImage(rawFile);
         const ext = file.name.split('.').pop();
         const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
         const { error: uploadError } = await supabase.storage

@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-colors px-4 py-2 rounded-full ${
+                className={`text-sm font-medium transition-colors px-4 py-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
                   isActive(link.path)
                     ? 'bg-teal-50 text-teal-700 font-semibold'
                     : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
             ))}
             <Link
               to="/kapcsolat"
-              className="ml-3 bg-orange-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-600 transition-all shadow-md hover:shadow-lg"
+              className="ml-3 bg-orange-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-600 transition-all shadow-md hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
             >
               Látogasson el hozzánk!
             </Link>
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-4 py-3.5 text-base font-medium rounded-xl ${
+                className={`block px-4 py-3.5 text-base font-medium rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
                   isActive(link.path) ? 'bg-teal-50 text-teal-700 font-semibold' : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
             <Link
               to="/kapcsolat"
               onClick={() => setIsOpen(false)}
-              className="block text-center bg-orange-500 text-white px-4 py-3.5 rounded-xl text-base font-semibold hover:bg-orange-600 transition-colors mt-3"
+              className="block text-center bg-orange-500 text-white px-4 py-3.5 rounded-xl text-base font-semibold hover:bg-orange-600 transition-colors mt-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
             >
               Látogasson el hozzánk!
             </Link>
